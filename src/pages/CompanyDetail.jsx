@@ -114,9 +114,9 @@ function CompanyDetail(){
 
 
     const handleAddCompany = (newCompany) => {
-    // In a real app, you would save to a database
-    // For now, we'll just show an alert
-    alert(`Company "${newCompany.name}" has been added successfully!`);
+    // Add the new company to the companies state
+    setCompanies(prevCompanies => [...prevCompanies, newCompany]);
+    alert(`Company "${newCompany.companyName}" has been added successfully!`);
     console.log('New company added:', newCompany);
   };
 
@@ -133,12 +133,22 @@ function CompanyDetail(){
     console.log('Filtering companies in city:', selectedCity);
   };
 
+  // Function to handle review updates from DetailReview
+  const handleReviewUpdate = (updatedCompany) => {
+    setCompanies(prevCompanies => 
+      prevCompanies.map(company => 
+        company._id === updatedCompany._id ? updatedCompany : company
+      )
+    );
+  };
+
   // If showing detail review, render only that component
   if (showDetailReview && selectedCompany) {
     return (
       <DetailReview 
         company={selectedCompany} 
         onClose={handleCloseDetailReview}
+        onReviewUpdate={handleReviewUpdate}
       />
     );
   }
