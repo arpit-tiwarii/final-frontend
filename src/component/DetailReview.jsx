@@ -7,7 +7,24 @@ const DetailReview = ({ company, onClose }) => {
 
     const handleAddReview = (newReview) => {
         // Add the new review to the reviews array (API already called in AddReview component)
-        setReviews(prev => [...prev, newReview]);
+        const updatedReviews = [...reviews, newReview];
+        setReviews(updatedReviews);
+        
+        // Calculate new average rating
+        const totalRating = updatedReviews.reduce((sum, review) => sum + review.rating, 0);
+        const averageRating = totalRating / updatedReviews.length;
+        
+        // Update the company object with new reviews and rating
+        const updatedCompany = {
+            ...company,
+            reviews: updatedReviews,
+            rating: averageRating
+        };
+        
+        // Notify parent component about the update
+        if (onReviewUpdate) {
+            onReviewUpdate(updatedCompany);
+        }
         alert('Review added successfully');
     };
 
