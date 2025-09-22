@@ -1,7 +1,7 @@
 import React from 'react';
 import AddReview from './AddReview';
 import { useState } from 'react';
-const DetailReview = ({ company, onClose }) => {
+const DetailReview = ({ company, onClose, onReviewUpdate }) => {
     const [showAddReview, setShowAddReview] = useState(false);  
     const [reviews, setReviews] = useState(company.reviews || []);
 
@@ -25,6 +25,7 @@ const DetailReview = ({ company, onClose }) => {
         if (onReviewUpdate) {
             onReviewUpdate(updatedCompany);
         }
+        
         alert('Review added successfully');
     };
 
@@ -125,11 +126,11 @@ const DetailReview = ({ company, onClose }) => {
                   {company.location}
                 </p>
                 <div className="d-flex align-items-center">
-                  <span className="me-2 fw-semibold fs-5">{company.rating}</span>
+                  <span className="me-2 fw-semibold fs-5">{reviews.length > 0 ? (reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(1) : '0.0'}</span>
                   <div className="me-3">
-                    {renderCompanyStars(company.rating)}
+                    {renderCompanyStars(reviews.length > 0 ? reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length : 0)}
                   </div>
-                  <span className="text-muted">{company.reviews.length} Reviews</span>
+                  <span className="text-muted">{reviews.length} Reviews</span>
                 </div>
               </div>
               <div className="col-md-3 text-end">
